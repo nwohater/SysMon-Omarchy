@@ -1,0 +1,30 @@
+#!/bin/bash
+# Samples /proc/stat over a short window to get total CPU busy %, and
+# /proc/meminfo for used memory %. Emits {"cpu":N,"mem":N} as JSON.
+set -euo pipefail
+
+read -r _ u1 n1 s1 i1 w1 irq1 sirq1 st1 _ < /proc/stat
+sleep 0.3
+read -r _ u2 n2 s2 i2 w2 irq2 sirq2 st2 _ < /proc/stat
+
+idle1=$((i1 + w1))
+idle2=$((i2 + w2))
+total1=$((u1 + n1 + s1 + i1 + w1 + irq1 + sirq1 + st1))
+total2=$((u2 + n2 + s2 + i2 + w2 + irq2 + sirq2 + st2))
+totald=$((total2 - total1))
+idled=$((idle2 - idle1))
+
+cpu=0
+if [ "$totald" -gt 0 ]; then
+  cpu=$(( (100 * (totald - idled)) / totald ))
+fi
+
+mem_total=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
+mem_avail=$(awk '/^MemAvailable:/{print $2}' /proc/meminfo)
+
+mem=0
+if [ -n "$mem_total" ] && [ "$mem_total" -gt 0 ]; then
+  mem=$(( (100 * (mem_total - mem_avail)) / mem_total ))
+fi
+
+printf '{"cpu":%d,"mem":%d}\n' "$cpu" "$mem"
