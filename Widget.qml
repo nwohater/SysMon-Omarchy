@@ -13,7 +13,8 @@ BarWidget {
 
   property real cpuPct: 0
   property real memPct: 0
-  readonly property bool warn: cpuPct >= 80 || memPct >= 80
+  property real diskPct: 0
+  readonly property bool warn: cpuPct >= 80 || memPct >= 80 || diskPct >= 90
 
   function refresh() {
     if (statsProc.running) return
@@ -33,6 +34,7 @@ BarWidget {
           var data = JSON.parse(text || "{}")
           root.cpuPct = Number(data.cpu) || 0
           root.memPct = Number(data.mem) || 0
+          root.diskPct = Number(data.disk) || 0
         } catch (e) {
           return
         }
@@ -55,10 +57,10 @@ BarWidget {
     anchors.fill: parent
     bar: root.bar
     text: "CPU " + Math.round(root.cpuPct) + "%  MEM " + Math.round(root.memPct) + "%"
-    fontSize: Style.font.caption
+    fontSize: Style.font.body
     horizontalMargin: 6
     active: root.warn
-    tooltipText: "CPU usage: " + Math.round(root.cpuPct) + "%\nMemory usage: " + Math.round(root.memPct) + "%\nClick to open btop"
+    tooltipText: "CPU usage: " + Math.round(root.cpuPct) + "%\nMemory usage: " + Math.round(root.memPct) + "%\nDisk usage (/): " + Math.round(root.diskPct) + "%\nClick to open btop"
     onPressed: root.bar.run("omarchy-launch-floating-terminal-with-presentation btop")
   }
 }

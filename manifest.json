@@ -3,7 +3,7 @@
   "id": "io.github.nwohater.sysmon",
   "name": "System Monitor",
   "version": "0.1.0",
-  "description": "Live total CPU % and memory % usage in the Omarchy bar.",
+  "description": "Live total CPU %, memory % and root disk % usage in the Omarchy bar.",
   "author": "nwohater",
   "homepage": "https://github.com/nwohater/SysMon-Omarchy",
   "repository": "https://github.com/nwohater/SysMon-Omarchy",
@@ -11,7 +11,7 @@
   "entryPoints": {"barWidget": "Widget.qml"},
   "barWidget": {
     "displayName": "System Monitor",
-    "description": "Live CPU % and memory % usage",
+    "description": "Live CPU %, memory % and disk % usage",
     "category": "System",
     "allowMultiple": false,
     "defaultSection": "right"

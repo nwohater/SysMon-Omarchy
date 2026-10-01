@@ -1,6 +1,7 @@
 #!/bin/bash
 # Samples /proc/stat over a short window to get total CPU busy %, and
-# /proc/meminfo for used memory %. Emits {"cpu":N,"mem":N} as JSON.
+# /proc/meminfo for used memory %, and df for root disk used %.
+# Emits {"cpu":N,"mem":N,"disk":N} as JSON.
 set -euo pipefail
 
 read -r _ u1 n1 s1 i1 w1 irq1 sirq1 st1 _ < /proc/stat
@@ -27,4 +28,7 @@ if [ -n "$mem_total" ] && [ "$mem_total" -gt 0 ]; then
   mem=$(( (100 * (mem_total - mem_avail)) / mem_total ))
 fi
 
-printf '{"cpu":%d,"mem":%d}\n' "$cpu" "$mem"
+disk=$(df --output=pcent / | tail -n1 | tr -dc '0-9')
+disk=${disk:-0}
+
+printf '{"cpu":%d,"mem":%d,"disk":%d}\n' "$cpu" "$mem" "$disk"

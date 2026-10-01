@@ -1,6 +1,6 @@
 # System Monitor (Omarchy bar plugin)
 
-Live total CPU % and memory % usage in the Omarchy status bar.
+Live total CPU %, memory % and root disk % usage in the Omarchy status bar.
 
 ## Install
 
@@ -34,9 +34,9 @@ automatically if validation fails — so a bad update can't break your bar.
 ## How it works
 
 `sysmon-stats` samples `/proc/stat` over a 0.3s window to compute total CPU
-busy %, and reads `/proc/meminfo` for used memory %. `Widget.qml` runs it
-every 2 seconds and renders `CPU N%  MEM N%`, highlighting when either value
-hits 80%+. Click the widget to open `btop`.
+busy %, and reads `/proc/meminfo` for used memory %, and `df /` for disk used %. `Widget.qml` runs it
+every 2 seconds and renders `CPU N%  MEM N%  DISK N%`, highlighting when CPU or memory
+hits 80%+ or disk hits 90%+. Click the widget to open `btop`.
 
 ## Uninstall
 
