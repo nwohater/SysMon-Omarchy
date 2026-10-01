@@ -56,7 +56,7 @@ BarWidget {
     id: button
     anchors.fill: parent
     bar: root.bar
-    text: "CPU " + Math.round(root.cpuPct) + "%  MEM " + Math.round(root.memPct) + "%"
+    text: "CPU " + Math.round(root.cpuPct) + "%  MEM " + Math.round(root.memPct) + "%  DISK " + Math.round(root.diskPct) + "%"
     fontSize: Style.font.body
     horizontalMargin: 6
     active: root.warn
